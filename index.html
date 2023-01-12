@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script type="module" src="/main.js" defer></script>
+    <title>Vite App</title>
+  </head>
+  <body>
+    <!-- <div class="container">  -->
+    <!-- <svg width="1000" height="1000">
+        <g>
+          <circle r="40" cx="100" cy="100"  class="circle--1"></circle>
+          <rect x="200" y="75" width="50" height="50" fill="#1257aa"></rect>
+          <ellipse cx="500" cy="100" rx="70" ry="50"></ellipse>
+
+          <g transform="translate(0 200)" stroke="red" fill="blue" stroke-width="2">
+              <circle r="40" cx="100" cy="100"></circle>
+              <rect x="200" y="75" width="50" height="50" rx="10" ry="10"></rect>
+          </g>
+
+          <g class="lines">
+            <line x1="300" y1="100" x2="400" y2="200" stroke="#217633" stroke-width="3"></line>
+            <path d="M100 400 L200 450 L50 450 L150 500" stroke="black" stroke-width="3" fill="none"></path>
+          </g>
+
+          <g class="polygons">
+            <polygon points="400,350 615,250 555,380 615,425"></polygon>
+          </g>
+          <polyline points="600,150 635,190 685,220 640,170 650,130"></polyline>
+          <text x="750" y="100">Text Element</text>
+
+          
+           <path d="M850 400 L810 340 L840 310 L890,380 T750,430 T800,490 T800,600" fill="none" stroke="red" stroke-width="3"></path>
+
+           <rect x="100" y="900" width="100" height="100" class="transformed-rect"></rect>
+        </g>
+      </svg> -->
+    <!-- 
+            M = Move to
+            L = Line to
+            C = Curve to
+            H = Horizontal Line to
+            V = Vertical Line to
+            S = Smooth Curve to
+            Q = Quadratic Bezier Curve to
+            T = Smooth Quadratic Bezier Curve to
+            A = Elliptical Arc to
+            Z = close path
+           -->
+    <!-- <svg width="500" height="400">
+        <g>
+          <text x="10" y="30" class="title">A Simple Bar Chart</text>
+          
+          <g class="bar-group">
+            <rect width="60" height="20" x="20" y="50" class="bar"></rect>
+            <text x="35" y="63" class="annotation">Jack</text>
+            <text x="90" y="63" class="annotation value">60</text>
+          </g>
+          <g class="bar-group">
+            <rect width="90" height="20" x="20" y="80" class="bar"></rect>
+            <text x="35" y="93" class="annotation">Jill</text>
+            <text x="120" y="93" class="annotation value">90</text>
+          </g>
+          <g class="bar-group">
+            <rect width="70" height="20" x="20" y="110" class="bar"></rect>
+            <text x="35" y="123" class="annotation">Jane</text>
+            <text x="100" y="123" class="annotation value">70</text>
+          </g>
+        </g>
+      </svg>     -->
+    <!-- </div> -->
+
+    <h1>Select</h1>
+    <svg id="circles" width="300" height="200">
+      <circle r="30" cx="50" cy="50"></circle>
+      <circle r="50" cx="120" cy="120"></circle>
+    </svg>
+
+    <svg id="rects" width="300" height="200">
+      <rect width="100" height="30" x="5" y="5"></rect>
+      <rect width="70" height="30" x="50" y="50"></rect>
+    </svg>
+
+    <div>
+      <svg class="svgarea" width="300" height="200">
+        <circle r="20" cx="30" cy="30" class="odd"></circle>
+        <circle r="20" cx="80" cy="30" class="even"></circle>
+        <circle r="20" cx="130" cy="30" class="odd"></circle>
+      </svg>
+
+      <svg class="svgarea" width="300" height="200">
+        <rect width="40" height="40" x="30" y="30"></rect>
+        <rect width="40" height="40" x="80" y="30"></rect>
+        <rect width="40" height="40" x="130" y="30"></rect>
+      </svg>
+    </div>
+
+    <div>
+      <svg class="svgmerge1" width="300" height="200">
+        <circle r="20" cx="30" cy="30" class="odd"></circle>
+        <circle r="20" cx="80" cy="30" class="even"></circle>
+        <circle r="20" cx="130" cy="30" class="odd"></circle>
+        <circle r="20" cx="180" cy="30" class="odd"></circle>
+        <circle r="20" cx="230" cy="30" class="odd"></circle>
+      </svg>
+
+      <svg class="svgmerge2" width="300" height="200">
+        <circle r="20" cx="30" cy="30" class="odd"></circle>
+        <circle r="20" cx="80" cy="30" class="even"></circle>
+        <circle r="20" cx="130" cy="30" class="odd"></circle>
+        <circle r="20" cx="180" cy="30" class="odd"></circle>
+        <circle r="20" cx="230" cy="30" class="odd"></circle>
+      </svg>
+    </div>
+
+    <div>
+      <svg class="svgchild1" width="300" height="300">
+        <circle r="60" cx="150" cy="200"></circle>
+        <circle r="10" cx="250" cy="250"></circle>
+      </svg>
+
+      <svg class="svgchild2" width="300" height="300">
+        <rect width="100" height="80" x="150" y="150"></rect>
+        <rect width="20" height="20" x="250" y="250"></rect>
+      </svg>
+    </div>
+
+    <h1>Coloring elements</h1>
+    <div class="button-container">
+      <button class="btn" id="select">select</button>
+      <button class="btn" id="select-all">select all</button>
+      <button class="btn" id="filter-odd">filter-odd</button>
+      <button class="btn" id="filter-even">filter-even</button>
+    </div>
+    <div class="project">
+      <div class="svg-container">
+        <svg width="500" height="150" class="svg-circles">
+          <circle r="50" cx="70" cy="75"></circle>
+          <circle r="50" cx="190" cy="75"></circle>
+          <circle r="50" cx="310" cy="75"></circle>
+          <circle r="50" cx="430" cy="75"></circle>
+        </svg>
+      </div>
+      <div class="svg-container">
+        <svg width="500" height="150" class="svg-squares">
+          <rect x="40" y="50" width="50" height="50"></rect>
+          <rect x="160" y="50" width="50" height="50"></rect>
+          <rect x="280" y="50" width="50" height="50"></rect>
+          <rect x="400" y="50" width="50" height="50"></rect>
+        </svg>
+      </div>
+
+      <div class="svg-container">
+        <div>
+          <svg width="500" height="450" class="svg-rects">
+            <rect x="40" y="50" width="420" height="50"></rect>
+            <rect x="40" y="150" width="420" height="50"></rect>
+            <rect x="40" y="250" width="420" height="50"></rect>
+            <rect x="40" y="350" width="420" height="50"></rect>
+          </svg>
+        </div>
+      </div>
+    </div>
+    <p id="selection-text">Pressed Button: <span id="selection-span">Null</span></p>
+    <div>
+      <svg class="svgattr" width="300" height="200">
+        <circle r="20" cx="30" cy="30"></circle>
+        <circle r="20" cx="80" cy="30"></circle>
+        <circle r="20" cx="130" cy="30"></circle>
+        <circle r="20" cx="180" cy="30"></circle>
+        <circle r="20" cx="230" cy="30"></circle>
+      </svg>
+    </div>
+  </body>
+</html>
