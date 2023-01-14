@@ -1,5 +1,6 @@
 import "./styles.css";
 import * as d3 from "d3";
+import { movieData } from "./prj_imdb";
 
 // console.log(d3);
 // select methods
@@ -444,3 +445,34 @@ d3.select("#svgraise rect:nth-of-type(1)").raise();
 d3.select("#svgraise rect:nth-of-type(2)").raise();
 
 d3.select("#svgraise rect:nth-of-type(3)").lower();
+
+const movieContainer = document.querySelector(".movies-container");
+const movieList = document.createElement("div");
+movieList.className = "movie-list";
+
+movieData.forEach((mov, i, _) => {
+  const movBtn = document.createElement("p");
+  movBtn.className = "movie";
+  movBtn.innerText = mov.name;
+  movBtn.id = mov.id;
+  movieList.append(movBtn);
+});
+movieContainer.append(movieList);
+const detailsDiv = document.createElement("div");
+detailsDiv.className = "movie-details";
+movieContainer.append(detailsDiv);
+
+movieList.addEventListener("click", function() {
+  const target_id = event.target.id;
+
+  const targetMovie = movieData.find((mov, i, _) => mov.id === target_id);
+  detailsDiv.innerHTML = "";
+  detailsDiv.innerHTML = `
+  <h3><span>${targetMovie.name}</span></h3>
+  <p>Content Rating: <span>${targetMovie.contentRating}</span></p>
+    <p>Duration: <span>${targetMovie.duration}</span></p>
+    <p>Star Rating: <span>${targetMovie.starRating}</span></p>
+    <p>Votes: <span>${targetMovie.votes}</span></p>
+    <p>Gross: $<span>${targetMovie.gross}</span></p>
+  `;
+});
