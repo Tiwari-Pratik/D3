@@ -266,9 +266,9 @@ h1 {
 .data-container {
   margin: 0 auto;
   width: 80%;
-  /* background-color: #dedede; */
+  background-color: #dedede;
   display: grid;
-  grid-template-rows: repeat(auto-fit, minmax(100px, min-content));
+  grid-template-rows: 1fr 1fr min-content 1fr;
 }
 
 .rating-list {
@@ -276,7 +276,7 @@ h1 {
   grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
   justify-items: stretch;
   align-items: center;
-  /* background-color: #aabbaa; */
+  background-color: #aabbaa;
 }
 
 .rating-info {
@@ -298,7 +298,7 @@ h1 {
   grid-auto-rows: 30px;
   justify-items: stretch;
   align-items: center;
-  /* background-color: #aabaca; */
+  background-color: #aabaca;
 }
 
 .charts {
@@ -308,13 +308,10 @@ h1 {
 
 .votes {
   display: grid;
-  grid-template-rows: 1fr min-content;
-  align-items: center;
-  /* justify-items: center; */
+  grid-template-rows: 1fr 9fr;
 }
 
 .votes-para {
   text-align: center;
-  padding: 0.5rem 0;
-  /* align-self: bottom; */
+  /* padding: 0.5rem 0; */
 }

@@ -446,6 +446,8 @@ d3.select("#svgraise rect:nth-of-type(2)").raise();
 
 d3.select("#svgraise rect:nth-of-type(3)").lower();
 
+// project 2 -- imdb rating
+
 const movieContainer = document.querySelector(".movies-container");
 const movieList = document.createElement("div");
 movieList.className = "movie-list";
@@ -473,6 +475,219 @@ movieList.addEventListener("click", function() {
     <p>Duration: <span>${targetMovie.duration}</span></p>
     <p>Star Rating: <span>${targetMovie.starRating}</span></p>
     <p>Votes: <span>${targetMovie.votes}</span></p>
-    <p>Gross: $<span>${targetMovie.gross}</span></p>
+    <p>Gross Collection (USD Mn): <span>${targetMovie.gross}</span></p>
   `;
+});
+
+// console.log({ checkboxes });
+
+const submitBtn = document.querySelector(".submit");
+submitBtn.addEventListener("click", function() {
+  console.log("clicked");
+  const checkboxes = d3.selectAll(".rating > input[type = checkbox]");
+  const checkedSelection = checkboxes.select(function(d, i, n) {
+    const checkbox = d3.select(this);
+    const isChecked = checkbox.property("checked");
+    const checkId = checkbox.property("id");
+    const ratingLabel = document.querySelector(
+      `.rating:has(>input[id=${checkId}]) label`
+    );
+    // console.log({ ratingLabel });
+    const ratingLabelText = ratingLabel.textContent;
+    // console.log({ isChecked, checkId });
+    return { isChecked, checkId, text: ratingLabelText };
+  });
+  // console.log(checkedSelection._groups[0]);
+  const checkedData = checkedSelection._groups[0];
+  // console.log(checkedData);
+  const filteredMovieData = [];
+  if (!checkedData.some((data, i, _) => data.isChecked)) {
+    // console.log("no chechbox ticked");
+    alert("please select atleast one checkbox");
+    return;
+  }
+
+  checkedData.forEach(function(data, i, _) {
+    if (data.isChecked) {
+      const filtMovies = movieData.filter(
+        (mov, i, _) => mov.contentRating === data.text
+      );
+      // console.log(filtMovies);
+      filteredMovieData.push(filtMovies);
+    }
+  });
+  // console.log({ filteredMovieData });
+  const filtArData = filteredMovieData.map((data, i, movie) => {
+    return [movie[i][0].contentRating, data];
+  });
+  // console.log(filtArData);
+  const filteredMoviesMap = new Map(filtArData);
+  // console.log(filteredMoviesMap);
+  // console.log(filteredMoviesMap.get("U"));
+  console.log([...filteredMoviesMap.keys()]);
+  const mapKeys = [...filteredMoviesMap.keys()];
+
+  const ratingList = d3.select(".rating-list");
+  ratingList.selectChildren().remove();
+  mapKeys.forEach((key, i, _) => {
+    console.log(key);
+    const div = ratingList.append("div");
+    div.classed("rating-info", "true");
+    div.append("h3").text(`#${filteredMoviesMap.get(key).length}`);
+    div.append("p").text(`"${key}" rating movie(s) selected`);
+  });
+  const legends = d3.select(".legends");
+  legends.selectChildren().remove();
+  const charts = d3.select(".charts");
+  charts.selectChildren().remove();
+
+  const grossDiv = charts.append("div").classed("gross", "true");
+  const durationDiv = charts.append("div").classed("duration", "true");
+
+  const grossSvg = grossDiv
+    .append("svg")
+    .attr("width", "100%")
+    .attr("height", "500px");
+  const durationSvg = durationDiv
+    .append("svg")
+    .attr("width", "100%")
+    .attr("height", "500px");
+
+  grossSvg
+    .append("text")
+    .text("Gross Collection inj USD Million")
+    .attr("x", "10%")
+    .attr("y", "10%")
+    .style("font-size", "1rem");
+  durationSvg
+    .append("text")
+    .text("Duration in Minutes")
+    .attr("x", "10%")
+    .attr("y", "10%")
+    .style("font-size", "1rem");
+  let movieLength = 0;
+  let maxCollection = 0;
+  let maxDuration = 0;
+  let maxVotes = 0;
+  const grossCollection = [];
+  const durations = [];
+  const votes = [];
+
+  mapKeys.forEach((key, i, _) => {
+    const data = filteredMoviesMap.get(key);
+    movieLength += data.length;
+    maxCollection = data.reduce((acc, val) => {
+      return val.gross >= acc ? val.gross : acc;
+    }, maxCollection);
+    maxDuration = data.reduce((acc, val) => {
+      return val.duration >= acc ? val.duration : acc;
+    }, maxDuration);
+    maxVotes = data.reduce((acc, val) => {
+      return val.votes >= acc ? val.votes : acc;
+    }, maxVotes);
+
+    data.forEach((mov, i) => grossCollection.push(mov.gross));
+    data.forEach((mov, i) => durations.push(mov.duration));
+    data.forEach((mov, i) => votes.push(mov.votes));
+  });
+  console.log({
+    movieLength,
+    maxCollection,
+    maxDuration,
+    grossCollection,
+    durations,
+  });
+
+  const legendColors = [];
+
+  mapKeys.forEach((key, i, _) => {
+    const ratingData = filteredMoviesMap.get(key);
+    ratingData.forEach((data, i, _) => {
+      const div = legends.append("div");
+      div.classed("legend", "true");
+      const svg = div.append("svg").attr("width", "100%").attr("height", "80%");
+      const legendColor = `rgb(${Math.random() * 255},${Math.random() * 255},${Math.random() * 255
+        })`;
+      legendColors.push(legendColor);
+      svg
+        .append("circle")
+        .attr("cx", "20%")
+        .attr("cy", "50%")
+        .attr("r", "2%")
+        .style("fill", legendColor);
+      svg
+        .append("text")
+        .text(data.name)
+        .attr("x", "25%")
+        .attr("y", "51%")
+        .style("font-size", ".7rem")
+        .style("color", "#aaaaaa");
+    });
+  });
+
+  console.log(legendColors);
+
+  const barHeight = 5;
+  const numGaps = movieLength + 1;
+  const gapHeights = ((100 - movieLength * barHeight) / numGaps / 100) * 80;
+
+  for (let i = 0; i < movieLength; i++) {
+    grossSvg
+      .append("rect")
+      .attr("x", "10%")
+      .attr("y", `${10 + (i + 1) * gapHeights + i * barHeight}%`)
+      .attr("width", `${(grossCollection[i] / maxCollection) * 80}%`)
+      .attr("height", `${barHeight}%`)
+      .style("fill", legendColors[i]);
+    grossSvg
+      .append("text")
+      .text(grossCollection[i])
+      .attr("x", `${10 + (grossCollection[i] / maxCollection) * 80 + 3}%`)
+      .attr("y", `${13.5 + (i + 1) * gapHeights + i * barHeight}%`)
+      .style("fonst-size", ".4rem");
+  }
+  for (let i = 0; i < movieLength; i++) {
+    durationSvg
+      .append("rect")
+      .attr("x", "10%")
+      .attr("y", `${10 + (i + 1) * gapHeights + i * barHeight}%`)
+      .attr("width", `${(durations[i] / maxDuration) * 80}%`)
+      .attr("height", `${barHeight}%`)
+      .style("fill", legendColors[i]);
+    durationSvg
+      .append("text")
+      .text(durations[i])
+      .attr("x", `${10 + (durations[i] / maxDuration) * 80 + 3}%`)
+      .attr("y", `${13.5 + (i + 1) * gapHeights + i * barHeight}%`)
+      .style("fonst-size", ".4rem");
+  }
+
+  const votesDiv = d3.select(".votes-svg");
+  votesDiv.selectChildren().remove();
+
+  const votesSvg = votesDiv
+    .append("svg")
+    .attr("width", "100%")
+    .attr("height", "100%");
+  console.log(votesSvg.property("height").baseVal);
+
+  const maxRadius = 40;
+  const circleGap = 10;
+  // let prevradius = 0;
+  for (let i = 0; i < movieLength; i++) {
+    const radius = (votes[i] / maxVotes) * maxRadius;
+
+    votesSvg
+      .append("circle")
+      .attr("cx", `${20 + (2 * i + 1) * maxRadius + i * circleGap}px`)
+      .attr("cy", "50%")
+      .attr("r", `${radius}px`)
+      .style("fill", legendColors[i]);
+    votesSvg
+      .append("text")
+      .text(votes[i])
+      .attr("x", `${20 + (2 * i + 1) * maxRadius + i * circleGap - radius}px`)
+      .attr("y", "22px")
+      .style("fonst-size", ".4rem");
+  }
 });
