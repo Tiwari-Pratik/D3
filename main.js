@@ -691,3 +691,42 @@ submitBtn.addEventListener("click", function() {
       .style("fonst-size", ".4rem");
   }
 });
+
+// Data methods
+
+const dataCirclesSvg1 = d3.selectAll("#data-div #data-svg1 circle");
+console.log({ dataCirclesSvg1 });
+
+const radSvg1 = [10, 20, 30];
+
+const dataCircles1 = dataCirclesSvg1.data(radSvg1);
+console.log({ dataCircles1 });
+
+dataCircles1.attr("r", (d) => d);
+
+const dataCirclesSvg2 = d3.selectAll("#data-div #data-svg2 circle");
+const dataCircles2 = dataCirclesSvg2.data(radSvg1);
+dataCircles2.attr("r", (d) => d);
+
+const colors = ["red", "green", "blue"];
+
+dataCircles2.data(colors);
+dataCircles2.style("fill", (d) => d);
+
+const allDataCircles = d3.selectAll("#data-div svg").selectAll("circle");
+console.log({ allDataCircles });
+
+const radSvg2 = [25, 35, 45];
+
+const allDataSvgCircles = allDataCircles.data(radSvg2);
+allDataSvgCircles.attr("r", (d) => d);
+
+const dataCirclesSvg3 = d3.selectAll("#data-div #data-svg3 circle");
+
+const radSvg3 = [20, 30, 40];
+
+const dataCircles3 = dataCirclesSvg3.datum((d, i, n) => {
+  return radSvg3[i];
+});
+console.log({ dataCircles3 });
+dataCircles3.attr("r", (d) => d);
