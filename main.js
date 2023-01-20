@@ -730,3 +730,43 @@ const dataCircles3 = dataCirclesSvg3.datum((d, i, n) => {
 });
 console.log({ dataCircles3 });
 dataCircles3.attr("r", (d) => d);
+
+// enter method
+
+const enterSvg = d3.select("#data-enter #svg-enter");
+enterSvg.append("circle").attr("cx", "150").attr("cy", "50").attr("r", "40");
+enterSvg.append("circle").attr("cx", "150").attr("cy", "150").attr("r", "30");
+
+const dataArray = [10, 20, 30];
+
+const allEnterCircles = enterSvg
+  .selectAll("circle")
+  .data(dataArray)
+  .attr("r", (d) => d);
+
+console.log({ allEnterCircles });
+
+console.log({ enter: allEnterCircles.enter() });
+
+allEnterCircles
+  .enter()
+  .append("circle")
+  .attr("cx", "150")
+  .attr("cy", "250")
+  .attr("r", (d) => d);
+
+// exit method
+
+const exitSvgCircles = d3.selectAll("#data-exit #svg-exit circle");
+console.log({ exitSvgCircles });
+
+const dataArray2 = [15, 15, 15];
+
+const exitDataSvgCircles = exitSvgCircles.data(dataArray2);
+console.log(exitDataSvgCircles);
+
+const exit = exitDataSvgCircles.exit();
+console.log({ exit });
+exit.remove();
+
+exitDataSvgCircles.attr("r", (d) => d);
