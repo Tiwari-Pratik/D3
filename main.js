@@ -770,3 +770,108 @@ console.log({ exit });
 exit.remove();
 
 exitDataSvgCircles.attr("r", (d) => d);
+
+// join method
+
+const joinSvg = d3.select("#div-join #svg-join");
+const svgData = [10, 20, 30];
+const joinCircles = joinSvg.selectAll("circle");
+const dataJoinCircles = joinCircles.data(svgData);
+const joinedCircles = dataJoinCircles.join("circle");
+console.log({ joinedCircles });
+joinedCircles
+  .attr("cx", function(d, i, n) {
+    return 150;
+  })
+  .attr("cy", function(d, i, n) {
+    return d + i * 50;
+  })
+  .attr("r", (d) => d);
+
+const svgData1 = [5, 10, 15, 20];
+
+const newJoinedCircles = joinedCircles
+  .data(svgData1)
+  .join("circle")
+  .attr("cx", function(d, i, n) {
+    return 150;
+  })
+  .attr("cy", function(d, i, n) {
+    return d + i * 50;
+  })
+  .attr("r", (d) => d);
+console.log(newJoinedCircles);
+
+const svgData2 = [20, 30];
+
+const newJoinedCircles1 = newJoinedCircles
+  .data(svgData2)
+  .join("circle")
+  .attr("cx", function(d, i, n) {
+    return 150;
+  })
+  .attr("cy", function(d, i, n) {
+    return d + i * 50;
+  })
+  .attr("r", (d) => d);
+console.log(newJoinedCircles1);
+
+const newJoinedCircles2 = newJoinedCircles1.data(["red", "blue"]).join(
+  (enter) => console.log(enter),
+  // (update) => console.log(update),
+  (update) => update.style("fill", (d) => d),
+  (exit) => console.log(exit)
+);
+console.log(newJoinedCircles2);
+
+const joinSvg1 = d3.select("#div-join #svg-join1");
+let dArr1 = [10, 20, 30];
+let joinCircles1 = joinSvg1.selectAll("circle");
+joinCircles1 = joinCircles1
+  .data(dArr1, function(d) {
+    return d.toString();
+  })
+  .join("circle")
+  .attr("cx", function(d, i, n) {
+    return 150;
+  })
+  .attr("cy", function(d, i, n) {
+    return d + i * 50;
+  })
+  .attr("r", (d) => d);
+
+console.log(joinCircles1);
+
+dArr1 = [10, 15, 30];
+
+joinCircles1 = joinCircles1
+  .data(dArr1, function(d) {
+    return d.toString();
+  })
+  .join("circle")
+  .attr("cx", function(d, i, n) {
+    return 150;
+  })
+  .attr("cy", function(d, i, n) {
+    return d + i * 50;
+  })
+  .attr("r", (d) => d);
+
+console.log(joinCircles1);
+
+dArr1 = [5, 30];
+
+joinCircles1 = joinCircles1
+  .data(dArr1, function(d) {
+    return d.toString();
+  })
+  .join("circle")
+  .attr("cx", function(d, i, n) {
+    return 150;
+  })
+  .attr("cy", function(d, i, n) {
+    return d + i * 50;
+  })
+  .attr("r", (d) => d);
+
+console.log(joinCircles1);
