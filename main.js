@@ -875,3 +875,101 @@ joinCircles1 = joinCircles1
   .attr("r", (d) => d);
 
 console.log(joinCircles1);
+
+// Handling events
+// on method
+
+const onSvg = d3.select("#on-div #on-svg");
+onSvg.on("click", function(e, d) {
+  console.log({ e });
+  console.log({ d });
+});
+
+onSvg.on("click", null);
+
+onSvg.on("click mouseover", function(e, d) {
+  console.log(e.type);
+  console.log(this);
+  if (e.type === "click") {
+    d3.select(this).style("fill", "green");
+  }
+  if (e.type === "mouseover") {
+    d3.select(this).style("fill", "red");
+  }
+});
+
+onSvg.on("mouseup", function(e, d) {
+  console.log("mouse up");
+});
+
+onSvg.on("click", function(e, d) {
+  d3.select(this).style("fill", "pink");
+});
+
+onSvg.on(".", null);
+
+const onRects = onSvg.selectAll("rect");
+
+onRects.on("click.1 click.2", function(e, d) {
+  console.log(e);
+  if (e.target.__on[0].name === "1") {
+    d3.select(this).style("fill", "orange");
+  }
+  if (e.target.__on[1].name === "2") {
+    d3.select(this).style("fill", "peachpuff");
+  }
+});
+
+onRects.on(".1 .2", null);
+
+// dispatch method
+
+const dispSvg1 = d3.select("#dispatch-div #dispatch-svg1");
+const dispCircle1 = dispSvg1.select("circle");
+dispCircle1.on("radius", function(e, d) {
+  console.log({ custome: e });
+  console.log({ customd: d });
+  d3.select(this).attr("r", e.detail);
+});
+
+dispCircle1.dispatch("radius", {
+  bubbles: true,
+  detail: "40",
+  cancelable: true,
+});
+const dispSvg2 = d3.select("#dispatch-tiv #dispatch-svg2");
+const dispCircles2 = dispSvg2.selectAll("circle");
+
+dispCircles2.on("color", function(e, d) {
+  d3.select(this).style("fill", e.detail);
+});
+
+dispCircles2.dispatch("color", function(d, i, n) {
+  return {
+    detail: `rgb(${Math.random() * 255},${Math.random() * 255},${Math.random() * 255
+      })`,
+  };
+});
+
+// pointer method
+
+const pointerSvg = d3.select("#pointer-div #pointer-svg");
+pointerSvg.on("click", function(e, d) {
+  console.log(d3.pointer(e));
+});
+const pointerCircle = pointerSvg.select("circle");
+pointerCircle.on("click", function(e, d) {
+  // console.log(d3.pointer(e, pointerCircle));
+  console.log(d3.pointer(e, pointerSvg));
+});
+
+// pointers method
+
+const pointersSvg = d3.select("#pointers-div #pointers-svg");
+pointersSvg.on("click", function(e, d) {
+  console.log(d3.pointers(e));
+});
+const pointersRect = pointersSvg.select("rect");
+pointersRect.on("click", function(e, d) {
+  console.log(d3.pointers(e, pointersSvg));
+});
